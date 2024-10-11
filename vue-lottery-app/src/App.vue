@@ -14,18 +14,20 @@ const isNewWinnerDisabled = computed(() => {
 
 const addNewWinner = () => {
   if (users.value.length > 0 && winners.value.length < 3) {
-    const randomIndex = Math.floor(Math.random() * users.value.length)
-    const newWinner = users.value[randomIndex]
-    winners.value.push(newWinner)
-    users.value.splice(randomIndex, 1)
+    let newWinner: UserData | undefined
+    do {
+      const randomIndex = Math.floor(Math.random() * users.value.length)
+      newWinner = users.value[randomIndex]
+    } while (winners.value.some((w) => w.id === newWinner?.id))
+    if (newWinner) {
+      winners.value.push(newWinner)
+    }
   }
 }
-
 const removeWinner = (winner: UserData) => {
   const index = winners.value.findIndex((w) => w.id === winner.id)
   if (index !== -1) {
     winners.value.splice(index, 1)
-    users.value.push(winner)
   }
 }
 
@@ -188,7 +190,11 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.id">
+            <tr
+              v-for="user in users"
+              :key="user.id"
+              :class="{ 'table-success': winners.some((w) => w.id === user.id) }"
+            >
               <th scope="row">{{ user.id }}</th>
               <td>{{ user.name }}</td>
               <td>{{ user.dob.toLocaleDateString() }}</td>
