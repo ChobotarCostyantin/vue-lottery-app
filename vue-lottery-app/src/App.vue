@@ -193,7 +193,7 @@ onMounted(() => {
             <tr
               v-for="user in users"
               :key="user.id"
-              :class="{ 'table-success': winners.some((w) => w.id === user.id) }"
+              :class="{ 'table-info': winners.some((w) => w.id === user.id) }"
             >
               <th scope="row">{{ user.id }}</th>
               <td>{{ user.name }}</td>
