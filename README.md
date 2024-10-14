@@ -1,2 +1,2 @@
 # vue-lottery-app
-Lab 6
+Lab 6-7
